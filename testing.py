@@ -94,6 +94,57 @@ def view_recipes():
             print(f"Category: {recipe[4]}")
             print("-" * 30)
 
+# ---- ADD RECIPE ----
+def add_recipe():
+    print("\n--- Add a Recipe ---")
+    
+    # Get recipe name and validate it is not empty
+    recipe_name = input("Enter recipe name: ").strip()
+    if len(recipe_name) == 0:
+        print("Recipe name cannot be empty.")
+        return
+    
+    # Get ingredients and validate not empty
+    ingredients = input("Enter ingredients (comma separated): ").strip()
+    if len(ingredients) == 0:
+        print("Ingredients cannot be empty.")
+        return
+    
+    # Get method and validate not empty
+    method = input("Enter method: ").strip()
+    if len(method) == 0:
+        print("Method cannot be empty.")
+        return
+    
+    # Get cooking time and validate it is a number above minimum
+    cooking_time = input("Enter cooking time in minutes: ").strip()
+    if cooking_time.isdigit() == False:
+        print("Cooking time must be a number.")
+        return
+    cooking_time = int(cooking_time)
+    if cooking_time < MIN_COOKING_TIME:
+        print(f"Cooking time must be at least {MIN_COOKING_TIME} minute.")
+        return
+    
+    # Show categories and get valid category choice
+    display_categories()
+    category_id = input("Enter category number: ").strip()
+    if category_id.isdigit() == False:
+        print("Invalid category.")
+        return
+    category_id = int(category_id)
+    if category_id not in range(1, 7):
+        print("Invalid category number.")
+        return
+    
+    # Insert recipe into database
+    cursor.execute("""
+        INSERT INTO recipes (recipe_name, ingredients, method, cooking_time, category_id)
+        VALUES (?, ?, ?, ?, ?)
+    """, (recipe_name, ingredients, method, cooking_time, category_id))
+    connection.commit()
+    print("Recipe added successfully!")2
+
 # ---- MAIN MENU ----
 def main_menu():
     print("\n=== Recipe Manager ===")
@@ -115,7 +166,7 @@ while True:
     elif choice == "1":
         view_recipes()
     elif choice == "2":
-        print("Coming soon.")
+        add_recipe()
     elif choice == "3":
         print("Coming soon.")
     elif choice == "4":
