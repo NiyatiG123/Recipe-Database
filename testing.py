@@ -59,4 +59,70 @@ cursor.executemany("INSERT OR IGNORE INTO recipes VALUES (?, ?, ?, ?, ?, ?)", de
 # Save all changes to the database
 connection.commit()
 
-print("Database set up successfully!")
+# ---- CONSTANTS ----
+MENU_OPTIONS = ["1", "2", "3", "4", "5", "6"]
+MIN_COOKING_TIME = 1
+
+# ---- DISPLAY CATEGORIES ----
+def display_categories():
+    # Fetch and display all categories from the database
+    cursor.execute("SELECT * FROM categories")
+    categories = cursor.fetchall()
+    print("\n--- Categories ---")
+    for category in categories:
+        print(f"{category[0]}. {category[1]}")
+
+# ---- VIEW RECIPES ----
+def view_recipes():
+    # Join recipes and categories tables so category name shows instead of just a number
+    cursor.execute("""
+        SELECT recipe_name, ingredients, method, cooking_time, category_name
+        FROM recipes
+        JOIN categories ON recipes.category_id = categories.category_id
+    """)
+    recipes = cursor.fetchall()
+    
+    if len(recipes) == 0:
+        print("\nNo recipes found.")
+    else:
+        print("\n--- All Recipes ---")
+        for recipe in recipes:
+            print(f"\nName: {recipe[0]}")
+            print(f"Ingredients: {recipe[1]}")
+            print(f"Method: {recipe[2]}")
+            print(f"Cooking Time: {recipe[3]} minutes")
+            print(f"Category: {recipe[4]}")
+            print("-" * 30)
+
+# ---- MAIN MENU ----
+def main_menu():
+    print("\n=== Recipe Manager ===")
+    print("1. View all recipes")
+    print("2. Add a recipe")
+    print("3. Search for a recipe")
+    print("4. Delete a recipe")
+    print("5. Sort recipes by cooking time")
+    print("6. Exit")
+
+# ---- MAIN LOOP ----
+while True:
+    main_menu()
+    choice = input("Enter your choice: ").strip()
+    
+    # Validate menu choice
+    if choice not in MENU_OPTIONS:
+        print("Invalid choice. Please enter a number between 1 and 6.")
+    elif choice == "1":
+        view_recipes()
+    elif choice == "2":
+        print("Coming soon.")
+    elif choice == "3":
+        print("Coming soon.")
+    elif choice == "4":
+        print("Coming soon.")
+    elif choice == "5":
+        print("Coming soon.")
+    elif choice == "6":
+        print("Goodbye!")
+        connection.close()
+        break
