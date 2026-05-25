@@ -178,6 +178,7 @@ def search_recipe():
             print(f"Category: {recipe[4]}")
             print("-" * 30)
 
+
 # ---- DELETE RECIPE ----
 def delete_recipe():
     print("\n--- Delete a Recipe ---")
@@ -203,6 +204,46 @@ def delete_recipe():
     cursor.execute("DELETE FROM recipes WHERE recipe_name = ?", (recipe_name,))
     connection.commit()
     print(f"{recipe_name} deleted successfully!")
+
+# ---- SORT RECIPES ----
+def sort_recipes():
+    print("\n--- Sort Recipes ---")
+    print("1. Shortest cooking time first")
+    print("2. Longest cooking time first")
+    
+    sort_choice = input("Enter choice: ").strip()
+    
+    # Validate sort choice
+    if sort_choice not in ["1", "2"]:
+        print("Invalid choice.")
+        return
+    
+    # Sort ascending or descending based on user choice
+    if sort_choice == "1":
+        cursor.execute("""
+            SELECT recipe_name, ingredients, method, cooking_time, category_name
+            FROM recipes
+            JOIN categories ON recipes.category_id = categories.category_id
+            ORDER BY cooking_time ASC
+        """)
+        print("\n--- Recipes by Shortest Cooking Time ---")
+    else:
+        cursor.execute("""
+            SELECT recipe_name, ingredients, method, cooking_time, category_name
+            FROM recipes
+            JOIN categories ON recipes.category_id = categories.category_id
+            ORDER BY cooking_time DESC
+        """)
+        print("\n--- Recipes by Longest Cooking Time ---")
+    
+    recipes = cursor.fetchall()
+    for recipe in recipes:
+        print(f"\nName: {recipe[0]}")
+        print(f"Ingredients: {recipe[1]}")
+        print(f"Method: {recipe[2]}")
+        print(f"Cooking Time: {recipe[3]} minutes")
+        print(f"Category: {recipe[4]}")
+        print("-" * 30)
 
 # ---- MAIN MENU ----
 def main_menu():
@@ -231,7 +272,7 @@ while True:
     elif choice == "4":
         delete_recipe()
     elif choice == "5":
-        print("Coming soon.")
+        sort_recipes()
     elif choice == "6":
         print("Goodbye!")
         connection.close()
