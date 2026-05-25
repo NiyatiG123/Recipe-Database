@@ -143,7 +143,39 @@ def add_recipe():
         VALUES (?, ?, ?, ?, ?)
     """, (recipe_name, ingredients, method, cooking_time, category_id))
     connection.commit()
-    print("Recipe added successfully!")2
+    print("Recipe added successfully!")
+
+# ---- SEARCH RECIPE ----
+def search_recipe():
+    print("\n--- Search Recipes ---")
+    
+    # Get search term and validate not empty
+    search_term = input("Enter recipe name to search: ").strip()
+    if len(search_term) == 0:
+        print("Search term cannot be empty.")
+        return
+    
+    # Search database using LIKE to find partial matches
+    cursor.execute("""
+        SELECT recipe_name, ingredients, method, cooking_time, category_name
+        FROM recipes
+        JOIN categories ON recipes.category_id = categories.category_id
+        WHERE recipe_name LIKE ?
+    """, ("%" + search_term + "%",))
+    
+    results = cursor.fetchall()
+    
+    if len(results) == 0:
+        print("No recipes found.")
+    else:
+        print(f"\n--- Results for '{search_term}' ---")
+        for recipe in results:
+            print(f"\nName: {recipe[0]}")
+            print(f"Ingredients: {recipe[1]}")
+            print(f"Method: {recipe[2]}")
+            print(f"Cooking Time: {recipe[3]} minutes")
+            print(f"Category: {recipe[4]}")
+            print("-" * 30)
 
 # ---- MAIN MENU ----
 def main_menu():
@@ -168,7 +200,7 @@ while True:
     elif choice == "2":
         add_recipe()
     elif choice == "3":
-        print("Coming soon.")
+        search_recipe()
     elif choice == "4":
         print("Coming soon.")
     elif choice == "5":
