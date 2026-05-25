@@ -178,6 +178,32 @@ def search_recipe():
             print(f"Category: {recipe[4]}")
             print("-" * 30)
 
+# ---- DELETE RECIPE ----
+def delete_recipe():
+    print("\n--- Delete a Recipe ---")
+    
+    # Show all recipes first so user knows what to delete
+    view_recipes()
+    
+    # Get recipe name to delete
+    recipe_name = input("\nEnter the name of the recipe to delete: ").strip()
+    if len(recipe_name) == 0:
+        print("Recipe name cannot be empty.")
+        return
+    
+    # Check if recipe exists before deleting
+    cursor.execute("SELECT * FROM recipes WHERE recipe_name = ?", (recipe_name,))
+    recipe = cursor.fetchone()
+    
+    if recipe is None:
+        print("Recipe not found.")
+        return
+    
+    # Delete the recipe permanently
+    cursor.execute("DELETE FROM recipes WHERE recipe_name = ?", (recipe_name,))
+    connection.commit()
+    print(f"{recipe_name} deleted successfully!")
+
 # ---- MAIN MENU ----
 def main_menu():
     print("\n=== Recipe Manager ===")
@@ -203,7 +229,7 @@ while True:
     elif choice == "3":
         search_recipe()
     elif choice == "4":
-        print("Coming soon.")
+        delete_recipe()
     elif choice == "5":
         print("Coming soon.")
     elif choice == "6":
