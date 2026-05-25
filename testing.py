@@ -62,6 +62,7 @@ connection.commit()
 # ---- CONSTANTS ----
 MENU_OPTIONS = ["1", "2", "3", "4", "5", "6"]
 MIN_COOKING_TIME = 1
+MAX_CATEGORY_ID = 6
 
 # ---- DISPLAY CATEGORIES ----
 def display_categories():
@@ -133,7 +134,7 @@ def add_recipe():
         print("Invalid category.")
         return
     category_id = int(category_id)
-    if category_id not in range(1, 7):
+    if category_id not in range(1, MAX_CATEGORY_ID + 1):
         print("Invalid category number.")
         return
     
