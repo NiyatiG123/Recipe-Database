@@ -193,7 +193,7 @@ def delete_recipe():
         return
     
     # Check if recipe exists before deleting
-    cursor.execute("SELECT * FROM recipes WHERE recipe_name = ?", (recipe_name,))
+    cursor.execute("SELECT * FROM recipes WHERE recipe_name = ? COLLATE NOCASE", (recipe_name,))
     recipe = cursor.fetchone()
     
     if recipe is None:
@@ -201,7 +201,7 @@ def delete_recipe():
         return
     
     # Delete the recipe permanently
-    cursor.execute("DELETE FROM recipes WHERE recipe_name = ?", (recipe_name,))
+    cursor.execute("DELETE FROM recipes WHERE recipe_name = ? COLLATE NOCASE", (recipe_name,))
     connection.commit()
     print(f"{recipe_name} deleted successfully!")
 
