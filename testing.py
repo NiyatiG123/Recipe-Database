@@ -90,7 +90,7 @@ def view_recipes():
         for recipe in recipes:
             print(f"\nName: {recipe[0]}")
             print(f"Ingredients: {recipe[1]}")
-            print(f"Method: {recipe[2]}")
+            print(f"method: {recipe[2]}")
             print(f"Cooking Time: {recipe[3]} minutes")
             print(f"Category: {recipe[4]}")
             print("-" * 30)
@@ -114,7 +114,7 @@ def add_recipe():
     # Get method and validate not empty
     method = input("Enter method: ").strip()
     if len(method) == 0:
-        print("Method cannot be empty.")
+        print("method cannot be empty.")
         return
     
     # Get cooking time and validate it is a number above minimum
@@ -173,7 +173,7 @@ def search_recipe():
         for recipe in results:
             print(f"\nName: {recipe[0]}")
             print(f"Ingredients: {recipe[1]}")
-            print(f"Method: {recipe[2]}")
+            print(f"method: {recipe[2]}")
             print(f"Cooking Time: {recipe[3]} minutes")
             print(f"Category: {recipe[4]}")
             print("-" * 30)
@@ -240,7 +240,7 @@ def sort_recipes():
     for recipe in recipes:
         print(f"\nName: {recipe[0]}")
         print(f"Ingredients: {recipe[1]}")
-        print(f"Method: {recipe[2]}")
+        print(f"method: {recipe[2]}")
         print(f"Cooking Time: {recipe[3]} minutes")
         print(f"Category: {recipe[4]}")
         print("-" * 30)
